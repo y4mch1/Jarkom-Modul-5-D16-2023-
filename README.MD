@@ -422,6 +422,10 @@ Nomor 6
 
 Lalu, karena ternyata terdapat beberapa waktu di mana network administrator dari WebServer tidak bisa stand by, sehingga perlu ditambahkan rule bahwa akses pada hari Senin - Kamis pada jam 12.00 - 13.00 dilarang (istirahat maksi cuy) dan akses di hari Jumat pada jam 11.00 - 13.00 juga dilarang (maklum, Jumatan rek).
 
+![Alt text](https://cdn.discordapp.com/attachments/1161172006964842496/1187036161512837210/image.png?ex=65956c92&is=6582f792&hm=73ca4850bc700de93dcfcc98134ed065fe4ff2696c3a5a220ab7355a1655876b&)
+
+![Alt text](https://cdn.discordapp.com/attachments/1161172006964842496/1187036240894251008/image.png?ex=65956ca5&is=6582f7a5&hm=bf08a39b952cd87a9ab7a39a7a20db116a9770e380fb3c4da271e5a53ef48e4a&)
+
 ```c
 Sein dan Stark (Web Server)
 iptables -I INPUT 1 -m time --timestart 12:00 --timestop 13:00 --weekdays Mon,Tue,Wed,Thu -j REJECT
@@ -435,6 +439,8 @@ Karena terdapat 2 WebServer, kalian diminta agar setiap client yang mengakses Se
 Nomor 8
 
 Karena berbeda koalisi politik, maka subnet dengan masyarakat yang berada pada Revolte dilarang keras mengakses WebServer hingga masa pencoblosan pemilu kepala suku 2024 berakhir. Masa pemilu (hingga pemungutan dan penghitungan suara selesai) kepala suku bersamaan dengan masa pemilu Presiden dan Wakil Presiden Indonesia 2024.
+
+![Alt text](https://cdn.discordapp.com/attachments/1161172006964842496/1187036723633463316/image.png?ex=65956d18&is=6582f818&hm=7ab87f70bf85882b2aa3f9815745987b47f9eadc568e1be9343c126c51dbf31b&)
 
 ```c
 Sein dan Stark (Web Server)
@@ -454,6 +460,8 @@ iptables -A FORWARD -m recent --name portcheck --update --seconds 600 --hitcount
 iptables -A INPUT -m recent --name portcheck --set -j ACCEPT
 iptables -A FORWARD -m recent --name portcheck --set -j ACCEPT
 ```
+
+![Alt text](https://cdn.discordapp.com/attachments/1161172006964842496/1187036997668327494/image.png?ex=65956d5a&is=6582f85a&hm=f394453988817cce630954c02d54ddd24ab4132fb79e57b986bfc01242f80291&)
 
 Nomor 10
 Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node server dan router ditambahkan logging paket yang di-drop dengan standard syslog level.
