@@ -15,6 +15,10 @@
 
 ![topologi](https://media.discordapp.net/attachments/1170650328950124618/1186996963040833606/image.png?ex=65954811&is=6582d311&hm=f193fbd6d95276ae1f194dd8837ba6af7b6964e20e497f50c7837c3fb819c655&=&format=webp&quality=lossless&width=871&height=675)
 
+## Tree
+
+![tree](https://cdn.discordapp.com/attachments/1161172006964842496/1187034858078339123/Screenshot_742.png?ex=65956b5c&is=6582f65c&hm=5357fb511fd1235daeebc05fced80fdb0a1ec307f7dc661bae09eb68428d90fe&)
+
 ## IP
 
 ![IP](https://cdn.discordapp.com/attachments/1170650328950124618/1187031845947310120/image.png?ex=6595688e&is=6582f38e&hm=bcb9558fbef5d2ecba46b19353917746504fb5a4c67213714eaa844059715e3a&)
