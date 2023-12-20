@@ -17,7 +17,7 @@
 
 ## IP
 
-![IP](https://media.discordapp.net/attachments/1170650328950124618/1187000541998489630/image.png?ex=65954b66&is=6582d666&hm=7a01a56be734283d389f2c5b0a0bf4da70ebc475e350a3cae40dd4a0459bab69&=&format=webp&quality=lossless&width=1440&height=366)
+![IP](https://cdn.discordapp.com/attachments/1170650328950124618/1187031845947310120/image.png?ex=6595688e&is=6582f38e&hm=bcb9558fbef5d2ecba46b19353917746504fb5a4c67213714eaa844059715e3a&)
 
 ## CONFIGURASI
 
