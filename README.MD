@@ -1,6 +1,6 @@
 # Jarkom-Modul-5-D16-2023
 
-**Praktikum Jaringan Komputer Modul 5 Tahun 2023**
+**Praktikum Jaringan Komputer Modul 4 Tahun 2023**
 
 ## Author
 
@@ -23,7 +23,7 @@
 
 ### Aura
 
-``` C
+```C
 auto eth0
 iface eth0 inet dhcp
 
@@ -56,7 +56,7 @@ iface eth2 inet static
 
 ### Frieren
 
-``` C
+```C
 auto eth0
 iface eth0 inet static
 	address 192.199.0.18
@@ -75,7 +75,7 @@ iface eth2 inet static
 
 ### Himmel
 
-``` C
+```C
 auto eth0
 iface eth0 inet static
 	address 192.199.0.10
@@ -94,7 +94,7 @@ iface eth2 inet static
 
 ### Fern
 
-``` C
+```C
 auto eth0
 iface eth0 inet static
 	address 192.199.0.130
@@ -113,7 +113,7 @@ iface eth2 inet static
 
 ### Sein (Web Server)
 
-``` C
+```C
 auto eth0
 iface eth0 inet static
 	address 192.199.4.2
@@ -122,7 +122,7 @@ gateway 192.199.4.1
 ```
 
 ### Stark (Web Server)
- 
+
 ```C
 auto eth0
 iface eth0 inet static
@@ -158,7 +158,8 @@ iface eth0 inet dhcp
 ### ROUTING
 
 Aura
-``` C
+
+```C
 #Kanan
 route add -net 192.199.8.0 netmask 255.255.248.0 gw 192.199.0.22 #A9
 route add -net 192.199.4.0 netmask 255.255.252.0 gw 192.199.0.22 #A10
@@ -173,6 +174,7 @@ route add -net 192.199.0.12 netmask 255.255.255.252 gw 192.199.0.18 #A6
 ```
 
 Heiter (DHCP Relay)
+
 ```c
 echo nameserver 192.168.122.1 > /etc/resolv.conf
 route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.199.0.21 #default
@@ -193,8 +195,10 @@ net.ipv4.ip_forward=1' > /etc/sysctl.conf
 service isc-dhcp-relay restart
 
 ```
+
 Frieren
-``` c
+
+```c
 echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.199.0.17 #default
@@ -203,7 +207,9 @@ route add -net 192.199.0.4 netmask 255.255.255.252 gw 192.199.0.10 #A2
 route add -net 192.199.0.128 netmask 255.255.255.128 gw 192.199.0.10 #A3
 route add -net 192.199.2.0 netmask 255.255.254.0 gw 192.199.0.10 #A4
 ```
+
 Himmel
+
 ```c
 echo nameserver 192.168.122.1 > /etc/resolv.conf
 
@@ -326,7 +332,130 @@ max-lease-time 7200;
 ```
 
 Fern
+
 ```c
 echo nameserver 192.168.122.1 > /etc/resolv.conf
 route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.199.0.129 #default
 ```
+
+# SOAL
+
+Nomor 1
+
+Aura
+
+```c
+IPETH0="$(ip -br a | grep eth0 | awk '{print $NF}' | cut -d'/' -f1)"
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT -s 192.199.0.0/20 --to-source "$IPETH0" 
+```
+
+Nomor 2
+
+Kalian diminta untuk melakukan drop semua TCP dan UDP kecuali port 8080 pada TCP.
+
+```c
+LaubHills
+iptables -F
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+iptables -A INPUT -p tcp -j DROP
+iptables -A INPUT -p udp -j DROP
+
+Testing
+Install apt-get install netcat -y
+LaubHills
+nc -l -p 8080
+
+SchwerMountain
+nc [IP LaubHills] 8080
+nc 192.199.2.3 8080
+```
+
+![Alt text](image.png)
+![Alt text](image-1.png)
+
+Nomor 3
+
+Kepala Suku North Area meminta kalian untuk membatasi DHCP dan DNS Server hanya dapat dilakukan ping oleh maksimal 3 device secara bersamaan, selebihnya akan di drop.
+
+```c
+Revolte (DHCP Server) & Richter (DNS Server)
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+Testing
+Ping Revolte dan Richter
+```
+
+![Alt text](image-2.png)
+![Alt text](image-3.png)
+![Alt text](image-4.png)
+![Alt text](image-5.png)
+Nomor 4
+
+Lakukan pembatasan sehingga koneksi SSH pada Web Server hanya dapat dilakukan oleh masyarakat yang berada pada GrobeForest.
+
+![Alt text](image-9.png)
+![Alt text](image-10.png)
+
+```c
+Sein dan Stark (Web Server)
+iptables -A INPUT -p tcp --dport 22 ! -s [IP GrobeForest] -j REJECT
+```
+
+Nomor 5
+
+Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Senin-Jumat pada pukul 08.00-16.00.
+
+```c
+Sein dan Stark (Web Server)
+iptables -A INPUT -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
+iptables -A INPUT -j REJECT
+```
+
+![Alt text](image-6.png)
+![Alt text](image-7.png)
+
+Nomor 6
+
+Lalu, karena ternyata terdapat beberapa waktu di mana network administrator dari WebServer tidak bisa stand by, sehingga perlu ditambahkan rule bahwa akses pada hari Senin - Kamis pada jam 12.00 - 13.00 dilarang (istirahat maksi cuy) dan akses di hari Jumat pada jam 11.00 - 13.00 juga dilarang (maklum, Jumatan rek).
+
+```c
+Sein dan Stark (Web Server)
+iptables -I INPUT 1 -m time --timestart 12:00 --timestop 13:00 --weekdays Mon,Tue,Wed,Thu -j REJECT
+iptables -I INPUT 1 -m time --timestart 11:00 --timestop 13:00 --weekdays Fri -j REJECT
+```
+
+Nomor 7
+
+Karena terdapat 2 WebServer, kalian diminta agar setiap client yang mengakses Sein dengan Port 80 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan dan request dari client yang mengakses Stark dengan port 443 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan.
+
+Nomor 8
+
+Karena berbeda koalisi politik, maka subnet dengan masyarakat yang berada pada Revolte dilarang keras mengakses WebServer hingga masa pencoblosan pemilu kepala suku 2024 berakhir. Masa pemilu (hingga pemungutan dan penghitungan suara selesai) kepala suku bersamaan dengan masa pemilu Presiden dan Wakil Presiden Indonesia 2024.
+
+```c
+Sein dan Stark (Web Server)
+iptables -A INPUT -s 192.199.0.0/30 -m time --datestart 2024-02-14 --datestop 2024-06-26 -j REJECT
+```
+
+Nomor 9
+
+Sadar akan adanya potensial saling serang antar kubu politik, maka WebServer harus dapat secara otomatis memblokir alamat IP yang melakukan scanning port dalam jumlah banyak (maksimal 20 scan port) di dalam selang waktu 10 menit.
+(clue: test dengan nmap)
+
+```c
+Sein dan Stark (Web Server)
+iptables -N portcheck
+iptables -A INPUT -m recent --name portcheck --update --seconds 600 --hitcount 20 -j DROP
+iptables -A FORWARD -m recent --name portcheck --update --seconds 600 --hitcount 20 -j DROP
+iptables -A INPUT -m recent --name portcheck --set -j ACCEPT
+iptables -A FORWARD -m recent --name portcheck --set -j ACCEPT
+```
+
+Nomor 10
+Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node server dan router ditambahkan logging paket yang di-drop dengan standard syslog level.
+
+```c
+iptables -A INPUT  -j LOG --log-level debug --log-prefix 'Dropped Packet' -m limit --limit 1/second --limit-burst 10
+```
+
+![Alt text](image-8.png)
